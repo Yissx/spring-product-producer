@@ -33,9 +33,9 @@ class ProductController (val productRepositoryService: ProductRepositoryService)
     fun getById(@PathVariable("id") id : Long) : ProductDto
         = productRepositoryService.getById(id)
 
-    @GetMapping("/search/{name}")
-    fun getByName(@PathVariable("name") name : String) : List<ProductDto>
-            = productRepositoryService.getByName(name)
+    @GetMapping("/search/{search}")
+    fun search(@PathVariable("search") search : String) : List<ProductDto>
+            = productRepositoryService.search(search)
 
     @PutMapping("/{id}")
     fun update(@RequestBody productDto: ProductDto, @PathVariable("id") id : Long) : ProductDto

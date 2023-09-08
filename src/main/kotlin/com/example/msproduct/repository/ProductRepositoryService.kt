@@ -26,8 +26,8 @@ class ProductRepositoryService(val productMapper : ProductMapper, val productRep
         return productMapper.toDto(response)
     }
 
-    fun getByName(name : String) : List<ProductDto> {
-        val entities = productRepository.findByNameContaining(name)
+    fun search(search : String) : List<ProductDto> {
+        val entities = productRepository.findByNameOrDescriptionContaining(search)
         return productMapper.toDto(entities)
     }
 

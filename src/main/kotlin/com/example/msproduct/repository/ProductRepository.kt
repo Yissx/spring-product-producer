@@ -9,6 +9,6 @@ import java.util.Optional
 
 @Repository
 interface ProductRepository : JpaRepository<ProductEntity, Long>{
-    @Query(value = "SELECT * FROM product WHERE name like :name", nativeQuery = true)
-    fun findByNameContaining(@Param("name") name : String) : List<ProductEntity>
+    @Query(value = "SELECT * FROM product WHERE name like :search or description like :search", nativeQuery = true)
+    fun findByNameOrDescriptionContaining(@Param("search") search : String) : List<ProductEntity>
 }
