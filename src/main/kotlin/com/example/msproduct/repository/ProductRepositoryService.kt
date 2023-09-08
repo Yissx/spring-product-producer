@@ -1,6 +1,7 @@
 package com.example.msproduct.repository
 
 import com.example.msproduct.dto.ProductDto
+import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.ProductMapper
 import org.springframework.stereotype.Service
 
@@ -19,8 +20,15 @@ class ProductRepositoryService(val productMapper : ProductMapper, val productRep
     }
 
     fun getById(id : Long) : ProductDto {
-        val response = productRepository.findById(id).orElseThrow()
+        val response = productRepository.findById(id).orElseThrow{
+            EntityNotFoundException("Non-existent id")
+        }
         return productMapper.toDto(response)
+    }
+
+    fun getByName(name : String) : List<ProductDto> {
+        val entities = productRepository.findByNameContaining(name)
+        return productMapper.toDto(entities)
     }
 
     fun update(productDto: ProductDto, id : Long) : ProductDto {

@@ -4,6 +4,7 @@ import com.example.msproduct.repository.ProductRepository
 import com.example.msproduct.dto.ProductDto
 import com.example.msproduct.mapper.ProductMapper
 import com.example.msproduct.repository.ProductRepositoryService
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.HttpStatus
 import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
@@ -31,6 +32,10 @@ class ProductController (val productRepositoryService: ProductRepositoryService)
     @GetMapping("/{id}")
     fun getById(@PathVariable("id") id : Long) : ProductDto
         = productRepositoryService.getById(id)
+
+    @GetMapping("/search/{name}")
+    fun getByName(@PathVariable("name") name : String) : List<ProductDto>
+            = productRepositoryService.getByName(name)
 
     @PutMapping("/{id}")
     fun update(@RequestBody productDto: ProductDto, @PathVariable("id") id : Long) : ProductDto
