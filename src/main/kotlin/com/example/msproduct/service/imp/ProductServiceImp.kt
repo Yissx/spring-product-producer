@@ -2,10 +2,12 @@ package com.example.msproduct.service.imp
 
 import com.example.msproduct.dto.ProductDto
 import com.example.msproduct.errors.EntityNotFoundException
+import com.example.msproduct.errors.InvalidRequestBody
 import com.example.msproduct.mapper.ProductMapper
 import com.example.msproduct.repository.ProductRepository
 import com.example.msproduct.service.ProductService
 import org.springframework.stereotype.Service
+import java.lang.Exception
 
 @Service
 class ProductServiceImp (
@@ -13,10 +15,15 @@ class ProductServiceImp (
     private val productMapper: ProductMapper)
     : ProductService {
 
-    override fun create(productDto: ProductDto) : ProductDto {
-        val entity = productMapper.toEntity(productDto)
-        val response = productRepository.save(entity)
-        return productMapper.toDto(response)
+    override fun  create(productDto: ProductDto) : ProductDto {
+        try {
+            val entity = productMapper.toEntity(productDto)
+            val response = productRepository.save(entity)
+            return productMapper.toDto(response)
+        }
+        catch(ex : Exception){
+            throw InvalidRequestBody("Invalid request body")
+        }
     }
 
     override fun get() : List<ProductDto>{
@@ -25,7 +32,7 @@ class ProductServiceImp (
     }
 
     override fun getById(id : Long) : ProductDto {
-        val response = productRepository.findById(id).orElseThrow(){
+        val response = productRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent id $id")
         }
         return productMapper.toDto(response)
@@ -37,10 +44,17 @@ class ProductServiceImp (
     }
 
     override fun update(productDto: ProductDto, id : Long) : ProductDto {
-        val entity = productRepository.findById(id).orElseThrow()
-        productMapper.updateEntity(productDto, entity)
-        val response = productRepository.save(entity)
-        return productMapper.toDto(response)
+        val entity = productRepository.findById(id).orElseThrow{
+            EntityNotFoundException("Non-existent id $id")
+        }
+        try {
+            productMapper.updateEntity(productDto, entity)
+            val response = productRepository.save(entity)
+            return productMapper.toDto(response)
+        }
+        catch (ex : Exception){
+            throw InvalidRequestBody("Invalid request body")
+        }
     }
 
     override fun delete(id : Long){
