@@ -26,12 +26,12 @@ class ProductController (val productService: ProductService){
         = productService.create(productDto)
 
     @GetMapping
-    fun get() : List<ProductDto>
-        = productService.get()
+    fun findAll() : List<ProductDto>
+        = productService.findAll()
 
     @GetMapping("/{id}")
-    fun getById(@PathVariable("id") id : Long) : ProductDto
-        = productService.getById(id)
+    fun findById(@PathVariable("id") id : Long) : ProductDto
+        = productService.findById(id)
 
     @GetMapping("/search/{search}")
     fun search(@PathVariable("search") search : String) : List<ProductDto>
