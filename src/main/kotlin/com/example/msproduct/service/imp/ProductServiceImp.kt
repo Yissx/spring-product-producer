@@ -16,14 +16,17 @@ class ProductServiceImp (
     : ProductService {
 
     override fun  create(productDto: ProductDto) : ProductDto {
-        try {
+        /*try {
             val entity = productMapper.toEntity(productDto)
             val response = productRepository.save(entity)
             return productMapper.toDto(response)
         }
         catch(ex : Exception){
             throw InvalidRequestBody("Invalid request body")
-        }
+        }*/
+        val entity = productMapper.toEntity(productDto)
+        val response = productRepository.save(entity)
+        return productMapper.toDto(response)
     }
 
     override fun findAll() : List<ProductDto>{
@@ -47,13 +50,9 @@ class ProductServiceImp (
         val entity = productRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent id $id")
         }
-            productMapper.updateEntity(productDto, entity)
-            val response = productRepository.save(entity)
-            return productMapper.toDto(response)
-
-
-
-
+        productMapper.updateEntity(productDto, entity)
+        val response = productRepository.save(entity)
+        return productMapper.toDto(response)
     }
 
     override fun delete(id : Long){
