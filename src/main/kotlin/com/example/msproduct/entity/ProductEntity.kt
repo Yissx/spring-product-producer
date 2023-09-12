@@ -11,16 +11,19 @@ import jakarta.validation.constraints.NotNull
 
 @Entity
 @Table(name = "product")
-class ProductEntity {
+class ProductEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id: Long? = null
+    var id: Long? = null,
+
     @NotNull
     @NotEmpty(message = "name must not be empty")
-    var name: String? = null
+    var name: String? = null,
+
     @NotNull
     @Min(value = 0, message = "price can not be negative")
-    var price: Double? = null
+    var price: Double? = null,
 
+    @NotNull
     var description: String? = null
-}
+)
