@@ -1,9 +1,11 @@
 package com.example.msproduct.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.GeneratedValue
 import jakarta.persistence.GenerationType
 import jakarta.persistence.Id
+import jakarta.persistence.ManyToOne
 import jakarta.persistence.Table
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
@@ -25,5 +27,8 @@ class ProductEntity (
     var price: Double? = null,
 
     @NotNull
-    var description: String? = null
+    var description: String? = null,
+
+    @ManyToOne
+    var orderProduct : OrderProductEntity? = null
 )

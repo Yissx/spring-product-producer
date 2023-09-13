@@ -1,5 +1,6 @@
 package com.example.msproduct.entity
 
+import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.FetchType
 import jakarta.persistence.GeneratedValue
@@ -14,16 +15,20 @@ import org.hibernate.validator.constraints.UUID
 import java.util.Date
 
 @Entity
-@Table(name = "order")
+@Table(name = "orders")
 data class OrderEntity(
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Long? = null,
 
     @NotNull
-    var order_date : Date? = null,
+    @Column(name="order_date")
+    var orderDate : Date? = null,
 
     @ManyToOne
-    @JoinColumn(name = "client_id", nullable = false)
-    var client : ClientEntity? = null
+    @JoinColumn(name = "client_id")
+    var client : ClientEntity? = null,
+
+    @ManyToOne
+    var orderProduct : OrderProductEntity? = null
 )
