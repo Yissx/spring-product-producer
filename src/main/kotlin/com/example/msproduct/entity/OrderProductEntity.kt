@@ -18,11 +18,4 @@ class OrderProductEntity (
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Long? = null,
 
-    @OneToMany
-    @JoinColumn(name = "product_id", nullable = false)
-    var products : List<ProductEntity>? = null,
-
-    @OneToMany
-    @JoinColumn(name = "order_id", nullable = false)
-    var orders : List<OrderEntity>? = null
 )

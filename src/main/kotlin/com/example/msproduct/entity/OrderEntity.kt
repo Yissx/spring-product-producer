@@ -29,6 +29,7 @@ data class OrderEntity(
     @JoinColumn(name = "client_id")
     var client : ClientEntity? = null,
 
-    @ManyToOne
-    var orderProduct : OrderProductEntity? = null
+    @OneToMany
+    @JoinColumn(name ="order_id")
+    var orderProducts : List<OrderProductEntity>? = null
 )
