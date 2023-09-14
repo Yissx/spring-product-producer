@@ -1,13 +1,16 @@
 package com.example.msproduct.service.imp
 
+import com.example.msproduct.dto.ClientDto
 import com.example.msproduct.dto.OrderDto
 import com.example.msproduct.entity.ClientEntity
+import com.example.msproduct.entity.OrderEntity
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.ClientMapper
 import com.example.msproduct.mapper.OrderMapper
 import com.example.msproduct.repository.ClientRepository
 import com.example.msproduct.repository.OrderRepository
 import com.example.msproduct.service.OrderService
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.stereotype.Service
 
 @Service
@@ -19,16 +22,14 @@ class OrderServiceImp(
 ) : OrderService{
 
     override fun create(orderDto: OrderDto): OrderDto {
-        val client = clientServiceImp.findById(orderDto.client_id!!)
-        val clientEntity = clientMapper.toEntity(client)
-        if(clientEntity != null){
-            val entity = orderMapper.toEntity(orderDto, clientEntity)
-            val response = orderRepository.save(entity)
-            return orderMapper.toDto(response)
-        }
-        else{
-            throw EntityNotFoundException("Non-existent client with id ${orderDto.client_id}")
-        }
+        val client = clientServiceImp.findById(orderDto.clientId!!)
+
+            val orderEntity = orderMapper.toEntity(orderDto)
+            orderEntity.client = clientMapper.toEntity(client)
+            val response = orderRepository.save(orderEntity)
+            return toDto(response)
+
+
     }
 
     override fun findAll(): List<OrderDto> {
@@ -37,14 +38,38 @@ class OrderServiceImp(
     }
 
     override fun findById(id: Long): OrderDto {
-        TODO("Not yet implemented")
+        val response = orderRepository.findById(id).orElseThrow{
+            EntityNotFoundException("Non-existent entity order with id $id")
+        }
+        return toDto(response)
     }
 
     override fun update(orderDto: OrderDto, id: Long): OrderDto {
         TODO("Not yet implemented")
+        /*val entity = orderRepository.findById(id).orElseThrow{
+            EntityNotFoundException("Non existent entity order with id $id")
+        }*/
     }
 
     override fun delete(id: Long) {
-        TODO("Not yet implemented")
+        orderRepository.deleteById(id)
     }
+    fun toDto(orderEntity: OrderEntity) : OrderDto {
+        return orderEntity.let {
+            OrderDto(
+                id = it.id,
+                orderDate = it.orderDate,
+                clientId = it.client!!.id
+            )
+        }
+    }
+    fun toEntity(orderDto: OrderDto, clientDto: ClientDto) : OrderEntity {
+        return orderDto.let {
+            OrderEntity(
+                orderDate = orderDto.orderDate,
+                client = clientMapper.toEntity(clientDto)
+            )
+        }
+    }
+
 }

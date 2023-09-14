@@ -34,6 +34,9 @@ data class ClientEntity (
     @NotBlank
     var adress : String? = null,
 
-    @OneToMany(mappedBy = "client")
+    @OneToMany(mappedBy = "client",
+               orphanRemoval = true,
+               cascade = [CascadeType.ALL],
+               fetch = FetchType.EAGER)
     var orders : List<OrderEntity>? = null
 )

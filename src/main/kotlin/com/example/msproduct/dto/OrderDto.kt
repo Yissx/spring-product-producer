@@ -6,7 +6,7 @@ import java.util.Date
 data class OrderDto (
     var id : Long? = null,
 
-    var order_date : Date? = null,
+    var orderDate : Date? = null,
 
-    var client_id : Long? = null
+    var clientId : Long? = null
 )

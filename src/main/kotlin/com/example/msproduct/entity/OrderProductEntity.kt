@@ -17,5 +17,4 @@ class OrderProductEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     var id : Long? = null,
-
 )
