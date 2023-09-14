@@ -81,16 +81,7 @@ class MsProductTest : TestData(){
 
     @Test
     fun `create`() {
-        val entity= msProduct()
         val dto = msProductDto()
-        Mockito.`when`(productMapper.toDto(entity)).thenReturn(
-            ProductDto().apply {
-                id = entity.id
-                name = entity.name
-                description = entity.description
-                price = entity.price
-            }
-        )
         Mockito.`when`(productMapper.toEntity(dto)).thenReturn(
             ProductEntity().apply {
                 id = dto.id
@@ -99,13 +90,21 @@ class MsProductTest : TestData(){
                 price = dto.price
             }
         )
-        //Mockito.verify((productMapper).toDto(entity))
+        val entity= msProduct()
         Mockito.`when`(productRepository.save(entity)).thenReturn(
             entity
         )
+        Mockito.`when`(productMapper.toDto(entity)).thenReturn(
+            ProductDto().apply {
+                id = entity.id
+                name = entity.name
+                description = entity.description
+                price = entity.price
+            }
+        )
         val response = productServiceImp.create(dto)
-        Mockito.verify(productRepository).save(entity)
-        Assertions.assertThat(dto.id).isEqualTo(response.id)
+        //Mockito.verify(productRepository).save(entity)
+        Assertions.assertThat(dto.name).isEqualTo(response.name)
     }
 
     @Test

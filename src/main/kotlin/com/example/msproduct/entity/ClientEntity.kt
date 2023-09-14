@@ -17,7 +17,7 @@ import jakarta.validation.constraints.Size
 data class ClientEntity (
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var  id : Long? = null,
+    var id : Long? = null,
 
     @NotNull
     @NotBlank
