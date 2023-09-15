@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/product")
@@ -30,7 +31,7 @@ class ProductController (val productService: ProductService){
         = productService.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable("id") id : Long) : ProductDto
+    fun findById(@PathVariable("id") id : UUID) : ProductDto
         = productService.findById(id)
 
     @GetMapping("/search/{search}")
@@ -38,11 +39,11 @@ class ProductController (val productService: ProductService){
         = productService.search(search)
 
     @PutMapping("/{id}")
-    fun update(@RequestBody productDto: ProductDto, @PathVariable("id") id : Long) : ProductDto
+    fun update(@RequestBody productDto: ProductDto, @PathVariable("id") id : UUID) : ProductDto
         = productService.update(productDto, id)
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
-    fun delete(@PathVariable("id") id : Long)
+    fun delete(@PathVariable("id") id : UUID)
         = productService.delete(id)
 }

@@ -1,9 +1,11 @@
 package com.example.msproduct.dto
 
+import java.util.UUID
+
 data class OrderProductDto(
-    var id : Long? = null,
+    var id : UUID? = null,
 
-    var productId : Long? = null,
+    var productId : UUID? = null,
 
-    var orderId : Long? = null
+    var orderId : UUID? = null
 )

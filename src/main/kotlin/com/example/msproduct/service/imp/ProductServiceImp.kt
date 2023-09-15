@@ -8,6 +8,7 @@ import com.example.msproduct.repository.ProductRepository
 import com.example.msproduct.service.ProductService
 import org.springframework.stereotype.Service
 import java.lang.Exception
+import java.util.UUID
 
 @Service
 class ProductServiceImp (
@@ -34,7 +35,7 @@ class ProductServiceImp (
         return productMapper.toDto(entities)
     }
 
-    override fun findById(id : Long) : ProductDto {
+    override fun findById(id : UUID) : ProductDto {
         val response = productRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent id $id")
         }
@@ -46,7 +47,7 @@ class ProductServiceImp (
         return productMapper.toDto(entities)
     }
 
-    override fun update(productDto: ProductDto, id : Long) : ProductDto {
+    override fun update(productDto: ProductDto, id : UUID) : ProductDto {
         val entity = productRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent id $id")
         }
@@ -55,7 +56,7 @@ class ProductServiceImp (
         return productMapper.toDto(response)
     }
 
-    override fun delete(id : Long){
+    override fun delete(id : UUID){
         productRepository.deleteById(id)
     }
 }

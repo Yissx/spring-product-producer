@@ -1,12 +1,12 @@
 package com.example.msproduct.dto
 
-import com.example.msproduct.entity.ClientEntity
-import java.util.Date
+import java.time.LocalDateTime
+import java.util.UUID
 
 data class OrderDto (
-    var id : Long? = null,
+    var id : UUID? = null,
 
-    var orderDate : Date? = null,
+    var orderDate : LocalDateTime? = null,
 
-    var clientId : Long? = null
+    var clientId : UUID? = null
 )

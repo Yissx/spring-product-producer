@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestController
+import java.util.UUID
 
 @RestController
 @RequestMapping("/orders")
@@ -23,18 +24,19 @@ class OrderController (private val orderService: OrderService){
         = orderService.findAll()
 
     @GetMapping("/{id}")
-    fun findById(@PathVariable("id") id : Long) : OrderDto
+    fun findById(@PathVariable("id") id : UUID) : OrderDto
         = orderService.findById(id)
 
     @PostMapping
-    fun create(@RequestBody orderDto: OrderDto) : OrderDto
-        = orderService.create(orderDto)
+    fun create(@RequestBody orderDto: OrderDto) : OrderDto {
+        println(orderDto)
+        return orderService.create(orderDto)}
 
     @PutMapping("/{id}")
-    fun update(@RequestBody orderDto: OrderDto, id : Long) :OrderDto
+    fun update(@RequestBody orderDto: OrderDto, id : UUID) :OrderDto
         = orderService.update(orderDto, id)
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
-    fun delete(@PathVariable id : Long)
+    fun delete(@PathVariable id : UUID)
         = orderService.delete(id)
 }

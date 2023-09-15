@@ -6,6 +6,7 @@ import com.example.msproduct.mapper.ClientMapper
 import com.example.msproduct.repository.ClientRepository
 import com.example.msproduct.service.ClientService
 import org.springframework.stereotype.Service
+import java.util.UUID
 
 @Service
 class ClientServiceImp (
@@ -24,14 +25,14 @@ class ClientServiceImp (
         return clientMapper.toDto(response)
     }
 
-    override fun findById(id: Long): ClientDto {
+    override fun findById(id: UUID): ClientDto {
         val response = clientRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent client entity with id $id")
         }
         return clientMapper.toDto(response)
     }
 
-    override fun update(clientDto: ClientDto, id: Long): ClientDto {
+    override fun update(clientDto: ClientDto, id: UUID): ClientDto {
         val entity = clientRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent client entity with id $id")
         }
@@ -40,7 +41,7 @@ class ClientServiceImp (
         return clientMapper.toDto(response)
     }
 
-    override fun delete(id: Long) {
+    override fun delete(id: UUID) {
         clientRepository.deleteById(id)
     }
 }

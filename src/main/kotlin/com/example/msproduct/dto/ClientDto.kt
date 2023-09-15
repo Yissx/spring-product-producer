@@ -1,7 +1,9 @@
 package com.example.msproduct.dto
 
+import java.util.UUID
+
 data class ClientDto (
-    var id : Long? = null,
+    var id : UUID? = null,
 
     var name : String? = null,
 

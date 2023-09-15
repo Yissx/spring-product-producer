@@ -12,12 +12,13 @@ import jakarta.persistence.Table
 import jakarta.validation.constraints.NotBlank
 import jakarta.validation.constraints.NotNull
 import jakarta.validation.constraints.Size
+import java.util.UUID
+
 @Entity
 @Table(name = "client")
 data class ClientEntity (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id : Long? = null,
+    var id : UUID = UUID.randomUUID(),
 
     @NotNull
     @NotBlank

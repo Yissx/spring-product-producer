@@ -9,12 +9,11 @@ import jakarta.persistence.ManyToOne
 import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
-import org.hibernate.validator.constraints.UUID
+import java.util.UUID
 
 @Entity
 @Table(name = "order_product")
 class OrderProductEntity (
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    var id : Long? = null,
+    var id : UUID = UUID.randomUUID()
 )
