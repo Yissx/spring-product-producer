@@ -8,5 +8,7 @@ data class OrderDto (
 
     var orderDate : LocalDateTime? = null,
 
-    var clientId : UUID? = null
+    var clientId : UUID? = null,
+
+    //var products : List<UUID>? = null
 )

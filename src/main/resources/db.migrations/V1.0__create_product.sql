@@ -1,5 +1,5 @@
-CREATE TABLE public.product (
-    id id NOT NULL,
+CREATE TABLE public.products (
+    id uuid NOT NULL,
     "name" VARCHAR NOT NULL,
     price DECIMAL NOT NULL,
     description VARCHAR NOT NULL,

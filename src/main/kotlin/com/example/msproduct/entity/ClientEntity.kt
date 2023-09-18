@@ -15,7 +15,7 @@ import jakarta.validation.constraints.Size
 import java.util.UUID
 
 @Entity
-@Table(name = "client")
+@Table(name = "clients")
 data class ClientEntity (
     @Id
     var id : UUID = UUID.randomUUID(),
@@ -33,7 +33,7 @@ data class ClientEntity (
 
     @NotNull
     @NotBlank
-    var adress : String? = null,
+    var address : String? = null,
 
     @OneToMany(mappedBy = "client",
                orphanRemoval = true,

@@ -9,7 +9,7 @@ import java.util.UUID
 
 @Repository
 interface ProductRepository : JpaRepository<ProductEntity, UUID>{
-    @Query(value = "SELECT * FROM product WHERE name like :search or description like :search", nativeQuery = true)
+    @Query(value = "SELECT * FROM products WHERE name like :search or description like :search", nativeQuery = true)
     fun findByNameOrDescriptionContaining(@Param("search") search : String) : List<ProductEntity>
 
 }

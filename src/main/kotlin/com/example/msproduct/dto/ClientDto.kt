@@ -11,5 +11,5 @@ data class ClientDto (
 
     var cellphone : String? = null,
 
-    var adress : String? = null,
+    var address : String? = null,
 )

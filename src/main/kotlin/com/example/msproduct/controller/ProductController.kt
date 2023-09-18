@@ -19,8 +19,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/product")
-@Validated
+@RequestMapping("/products")
 class ProductController (val productService: ProductService){
     @PostMapping
     fun create(@RequestBody productDto: ProductDto) : ProductDto

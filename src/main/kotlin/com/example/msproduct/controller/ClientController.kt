@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.UUID
 
 @RestController
-@RequestMapping("/client")
+@RequestMapping("/clients")
 class ClientController (val clientService: ClientService){
 
     @GetMapping

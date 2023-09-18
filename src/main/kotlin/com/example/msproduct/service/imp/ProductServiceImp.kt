@@ -49,7 +49,7 @@ class ProductServiceImp (
 
     override fun update(productDto: ProductDto, id : UUID) : ProductDto {
         val entity = productRepository.findById(id).orElseThrow{
-            EntityNotFoundException("Non-existent id $id")
+            EntityNotFoundException("Non-existent product entity with id $id")
         }
         productMapper.updateEntity(productDto, entity)
         val response = productRepository.save(entity)
