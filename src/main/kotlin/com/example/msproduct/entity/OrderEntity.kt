@@ -25,13 +25,13 @@ data class OrderEntity(
     @Column(name="order_date")
     var orderDate : LocalDateTime? = null,
 
+    @NotNull
     @ManyToOne
     @JoinColumn(name = "client_id")
     var client : ClientEntity? = null,
 
     @ManyToMany(
-        fetch = FetchType.EAGER,
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH]
+        fetch = FetchType.LAZY
     )
     @JoinTable(
         name = "order_product",

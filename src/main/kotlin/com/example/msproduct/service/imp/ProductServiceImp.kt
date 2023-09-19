@@ -29,7 +29,7 @@ class ProductServiceImp (
 
     override fun findById(id : UUID) : ProductDto {
         val response = productRepository.findById(id).orElseThrow{
-            EntityNotFoundException("Non-existent id $id")
+            EntityNotFoundException("Non-existent product entity with id $id")
         }
         return productMapper.toDto(response)
     }

@@ -31,14 +31,11 @@ class ProductEntity (
     @NotNull
     var description: String? = null,
 
-    /*@ManyToMany(
-        fetch = FetchType.EAGER,
-        cascade = [CascadeType.PERSIST, CascadeType.MERGE, CascadeType.REFRESH, CascadeType.DETACH]
-    )
+    @ManyToMany(fetch = FetchType.LAZY)//, mappedBy = "products")
     @JoinTable(
         name = "order_product",
         joinColumns = [JoinColumn(name = "product_id")],
         inverseJoinColumns = [JoinColumn(name = "order_id")]
     )
-    var orders : List<OrderEntity>? = null*/
+    var orders : List<OrderEntity>? = null
 )

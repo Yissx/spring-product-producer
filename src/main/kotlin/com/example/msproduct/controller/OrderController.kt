@@ -29,9 +29,8 @@ class OrderController (val orderService: OrderService){
         = orderService.findById(id)
 
     @PostMapping
-    fun create(@RequestBody orderDto: OrderDto) : OrderDto {
-        println(orderDto)
-        return orderService.create(orderDto)}
+    fun create(@RequestBody orderDto: OrderDto) : OrderDto
+        = orderService.create(orderDto)
 
     @PutMapping("/{id}/addProduct")
     fun addProduct(@RequestBody orderDto: OrderDto, @PathVariable("id") id : UUID) :OrderDto
