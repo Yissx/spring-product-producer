@@ -10,5 +10,5 @@ data class OrderDto (
 
     var clientId : UUID? = null,
 
-    //var products : List<UUID>? = null
+    var products : List<UUID>? = null
 )

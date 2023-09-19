@@ -1,32 +1,39 @@
 package com.example.msproduct.mapper
 
-import com.example.msproduct.dto.ClientDto
 import com.example.msproduct.dto.OrderDto
 import com.example.msproduct.entity.ClientEntity
 import com.example.msproduct.entity.OrderEntity
-import org.mapstruct.Mapper
-import org.mapstruct.Mapping
-import org.mapstruct.MappingTarget
-import org.mapstruct.Mappings
-import org.mapstruct.NullValueCheckStrategy
-import org.mapstruct.NullValuePropertyMappingStrategy
-import org.mapstruct.ReportingPolicy
+import com.example.msproduct.entity.ProductEntity
+import org.springframework.data.jpa.domain.AbstractPersistable_.id
+import org.springframework.stereotype.Service
 
-@Mapper(componentModel = "spring",
+/*@Mapper(componentModel = "spring",
     nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
     unmappedTargetPolicy = ReportingPolicy.IGNORE,
     nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS
-)
-interface OrderMapper {
+)*/
+@Service
+class OrderMapper {
 
-    fun toEntity(orderDto: OrderDto) : OrderEntity
-
-    @Mappings(value=[
-        Mapping(source = "client.id", target = "clientId")
-    ])
-    fun toDto(orderEntity: OrderEntity) : OrderDto
-
-    fun toDto(orderEntities: List<OrderEntity>) : List<OrderDto>
-
-
+    fun toDto(orderEntity: OrderEntity) : OrderDto {
+        return orderEntity.let {
+            OrderDto(
+                id = it.id,
+                orderDate = it.orderDate,
+                clientId = it.client!!.id,
+                products = it.products!!.map {product ->
+                    product.id
+                }
+            )
+        }
+    }
+    fun toEntity(orderDto: OrderDto, productEntities : List<ProductEntity>, clientEntity : ClientEntity) : OrderEntity {
+        return orderDto.let {
+            OrderEntity(
+                orderDate = it.orderDate,
+                client = clientEntity,
+                products = productEntities
+            )
+        }
+    }
 }

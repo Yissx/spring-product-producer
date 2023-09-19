@@ -17,14 +17,6 @@ class ProductServiceImp (
     : ProductService {
 
     override fun  create(productDto: ProductDto) : ProductDto {
-        /*try {
-            val entity = productMapper.toEntity(productDto)
-            val response = productRepository.save(entity)
-            return productMapper.toDto(response)
-        }
-        catch(ex : Exception){
-            throw InvalidRequestBody("Invalid request body")
-        }*/
         val entity = productMapper.toEntity(productDto)
         val response = productRepository.save(entity)
         return productMapper.toDto(response)

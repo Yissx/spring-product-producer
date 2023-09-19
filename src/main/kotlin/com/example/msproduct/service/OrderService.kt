@@ -10,7 +10,9 @@ interface OrderService {
 
     fun findById(id : UUID) : OrderDto
 
-    fun update(orderDto: OrderDto, id : UUID) : OrderDto
+    fun addProduct(orderDto: OrderDto, id : UUID) : OrderDto
+
+    fun deleteProduct(orderDto: OrderDto, id : UUID) : OrderDto
 
     fun delete(id : UUID)
 }
