@@ -46,24 +46,21 @@ class OrderServiceImp(
     }
 
     override fun addProduct(orderDto: OrderDto, id: UUID): OrderDto {
-        val order = orderRepository.findById(id).orElseThrow{
+        orderDto.products!!.forEach { productId ->
+            orderRepository.addProductToOrder(productId, id)
+        }
+        val response = orderRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent entity order with id $id")
         }
-        val productsToBeAdded : List<ProductEntity> = orderDto.products!!.map {
-            productMapper.toEntity(productServiceImp.findById(it))
-        }
-        order.products = order.products!!.plus(productsToBeAdded)
-        val response = orderRepository.save(order)
         return orderMapper.toDto(response)
     }
     override fun deleteProduct(orderDto: OrderDto, id: UUID): OrderDto {
-        val order = orderRepository.findById(id).orElseThrow{
+        orderDto.products!!.forEach {productId ->
+            orderRepository.deleteProductFromOrder(productId, id)
+        }
+        val response = orderRepository.findById(id).orElseThrow {
             EntityNotFoundException("Non-existent entity order with id $id")
         }
-        order.products = order.products!!.filter {
-            !orderDto.products!!.contains(it.id)
-        }
-        val response = orderRepository.save(order)
         return orderMapper.toDto(response)
     }
 
