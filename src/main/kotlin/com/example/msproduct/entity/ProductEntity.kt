@@ -1,13 +1,7 @@
 package com.example.msproduct.entity
 
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
-import jakarta.persistence.FetchType
 import jakarta.persistence.Id
-import jakarta.persistence.JoinColumn
-import jakarta.persistence.JoinTable
-import jakarta.persistence.ManyToMany
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
@@ -30,12 +24,4 @@ class ProductEntity (
 
     @NotNull
     var description: String? = null,
-
-    @ManyToMany(fetch = FetchType.LAZY)//, mappedBy = "products")
-    @JoinTable(
-        name = "order_product",
-        joinColumns = [JoinColumn(name = "product_id")],
-        inverseJoinColumns = [JoinColumn(name = "order_id")]
-    )
-    var orders : List<OrderEntity>? = null
 )

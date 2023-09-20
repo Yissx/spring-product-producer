@@ -2,12 +2,10 @@ package com.example.msproduct.service.imp
 
 import com.example.msproduct.dto.ProductDto
 import com.example.msproduct.errors.EntityNotFoundException
-import com.example.msproduct.errors.InvalidRequestBody
 import com.example.msproduct.mapper.ProductMapper
 import com.example.msproduct.repository.ProductRepository
 import com.example.msproduct.service.ProductService
 import org.springframework.stereotype.Service
-import java.lang.Exception
 import java.util.UUID
 
 @Service
@@ -49,6 +47,8 @@ class ProductServiceImp (
     }
 
     override fun delete(id : UUID){
+        val entity = productRepository.findById(id).orElseThrow { EntityNotFoundException("Non-existent product entity with id $id") }
+        productRepository.deleteProductFromOrder(entity.id)
         productRepository.deleteById(id)
     }
 }
