@@ -3,5 +3,5 @@ CREATE TABLE public.products (
     "name" VARCHAR NOT NULL,
     price DECIMAL NOT NULL,
     description VARCHAR NOT NULL,
-    CONSTRAINT product_pk PRIMARY KEY (id)
+    CONSTRAINT products_pk PRIMARY KEY (id)
 );
