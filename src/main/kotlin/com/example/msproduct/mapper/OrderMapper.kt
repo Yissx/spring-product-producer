@@ -17,7 +17,8 @@ class OrderMapper {
                 clientId = it.client!!.id,
                 products = it.products!!.map {product ->
                     product.id
-                }
+                },
+                status = it.status
             )
         }
     }
@@ -27,7 +28,8 @@ class OrderMapper {
             OrderEntity(
                 orderDate = it.orderDate,
                 client = clientEntity,
-                products = productEntities
+                products = productEntities,
+                status = it.status
             )
         }
     }
