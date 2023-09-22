@@ -32,11 +32,11 @@ class OrderController (val orderService: OrderService){
     fun create(@RequestBody orderDto: OrderDto) : OrderDto
         = orderService.create(orderDto)
 
-    @PutMapping("/{id}/addProduct")
+    @PutMapping("/{id}/add-product")
     fun addProduct(@RequestBody orderDto: OrderDto, @PathVariable("id") id : UUID) :OrderDto
         = orderService.addProduct(orderDto, id)
 
-    @PutMapping("/{id}/deleteProduct")
+    @PutMapping("/{id}/delete-product")
     fun deleteProduct(@RequestBody orderDto: OrderDto, @PathVariable("id") id : UUID) :OrderDto
             = orderService.deleteProduct(orderDto, id)
     @ResponseStatus(HttpStatus.OK)
