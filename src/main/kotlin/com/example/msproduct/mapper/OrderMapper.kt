@@ -1,9 +1,10 @@
 package com.example.msproduct.mapper
 
-import com.example.msproduct.dto.OrderDto
+import com.example.msproduct.dto.request.OrderDtoRequest
+import com.example.msproduct.dto.response.OrderDto
+import com.example.msproduct.dto.request.OrderDtoRequestCreate
 import com.example.msproduct.entity.ClientEntity
 import com.example.msproduct.entity.OrderEntity
-import com.example.msproduct.entity.ProductEntity
 import org.springframework.stereotype.Service
 
 @Service
@@ -15,22 +16,33 @@ class OrderMapper {
                 id = it.id,
                 orderDate = it.orderDate,
                 clientId = it.client!!.id,
-                products = it.products!!.map {product ->
-                    product.id
-                },
+                products = if(it.products != null) it.products!!.map { product -> product.id } else emptyList(),
                 status = it.status
             )
         }
     }
 
-    fun toEntity(orderDto: OrderDto, productEntities : List<ProductEntity>, clientEntity : ClientEntity) : OrderEntity {
+    fun toEntity(orderDto: OrderDtoRequestCreate, clientEntity : ClientEntity) : OrderEntity {
         return orderDto.let {
             OrderEntity(
                 orderDate = it.orderDate,
-                client = clientEntity,
-                products = productEntities,
-                status = it.status
+                client = clientEntity
             )
+        }
+    }
+
+    fun update(orderDto: OrderDtoRequest, orderEntity: OrderEntity) : OrderEntity {
+        if(orderDto == null){
+            return OrderEntity()
+        }
+        else{
+            if(orderDto.orderDate != null){
+                orderEntity.orderDate = orderDto.orderDate
+            }
+            if (orderDto.status != null){
+                orderEntity.status = orderDto.status
+            }
+            return orderEntity
         }
     }
 }

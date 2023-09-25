@@ -1,8 +1,7 @@
 package com.example.msproduct.controller
 
-import com.example.msproduct.dto.ClientDto
+import com.example.msproduct.dto.response.ClientDto
 import com.example.msproduct.service.ClientService
-import com.example.msproduct.service.imp.ClientServiceImp
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping

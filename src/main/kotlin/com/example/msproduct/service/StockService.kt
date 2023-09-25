@@ -1,12 +1,15 @@
 package com.example.msproduct.service
 
-import com.example.msproduct.dto.StockDto
+import com.example.msproduct.dto.response.StockDto
+import com.example.msproduct.dto.request.StockDtoRequest
+import com.example.msproduct.entity.ProductEntity
 import java.util.UUID
 
 interface StockService {
 
-    fun create(stockDto: StockDto)
+    fun create(product : ProductEntity)
 
-    fun update(stockDto: StockDto, id : UUID) : StockDto
+    fun update(stockDto : StockDtoRequest, id : UUID) : StockDto
 
+    fun findAll() : List<StockDto>
 }

@@ -1,7 +1,9 @@
 package com.example.msproduct.entity
 
+import jakarta.persistence.CascadeType
 import jakarta.persistence.Entity
 import jakarta.persistence.Id
+import jakarta.persistence.OneToOne
 import jakarta.persistence.Table
 import jakarta.validation.constraints.Min
 import jakarta.validation.constraints.NotEmpty
@@ -24,4 +26,11 @@ class ProductEntity (
 
     @NotNull
     var description: String? = null,
+
+    @OneToOne(
+        mappedBy = "product",
+        cascade = [CascadeType.ALL],
+        orphanRemoval = true
+    )
+    var stock : StockEntity? = null
 )

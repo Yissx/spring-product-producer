@@ -1,6 +1,6 @@
 package com.example.msproduct.service.imp
 
-import com.example.msproduct.dto.ClientDto
+import com.example.msproduct.dto.response.ClientDto
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.ClientMapper
 import com.example.msproduct.repository.ClientRepository

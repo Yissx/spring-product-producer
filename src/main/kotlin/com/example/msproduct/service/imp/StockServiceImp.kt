@@ -1,6 +1,9 @@
 package com.example.msproduct.service.imp
 
-import com.example.msproduct.dto.StockDto
+import com.example.msproduct.dto.request.StockDtoRequest
+import com.example.msproduct.dto.request.StockDtoRequestCreate
+import com.example.msproduct.dto.response.StockDto
+import com.example.msproduct.entity.ProductEntity
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.StockMapper
 import com.example.msproduct.repository.StockRepository
@@ -14,16 +17,22 @@ class StockServiceImp(
     private val stockRepository : StockRepository
 ) : StockService{
 
-    override fun create(stockDto: StockDto) {
-        println(stockDto)
-        val entity = stockMapper.toEntity(stockDto)
-        val x = stockRepository.save(entity)
+    override fun create(product : ProductEntity) {
+        val entity = stockMapper.toEntity(StockDtoRequestCreate(product))
+        stockRepository.save(entity)
     }
 
-    override fun update(stockDto: StockDto, id: UUID): StockDto {
-        val entity = stockRepository.findById(id).orElseThrow { EntityNotFoundException("") }
-        entity.stock += stockDto.stock
-        val response = stockRepository.save(entity)
+    override fun update(stockDto: StockDtoRequest, id: UUID): StockDto {
+        val stock = stockRepository.findById(id).orElseThrow {
+            EntityNotFoundException("Non-existent stock with id $id")
+        }
+        stock.stock = stockDto.stock
+        val response = stockRepository.save(stock)
+        return stockMapper.toDto(response)
+    }
+
+    override fun findAll(): List<StockDto> {
+        val response = stockRepository.findAll()
         return stockMapper.toDto(response)
     }
 

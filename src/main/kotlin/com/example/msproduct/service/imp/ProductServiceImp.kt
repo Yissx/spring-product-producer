@@ -1,6 +1,6 @@
 package com.example.msproduct.service.imp
 
-import com.example.msproduct.dto.ProductDto
+import com.example.msproduct.dto.response.ProductDto
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.ProductMapper
 import com.example.msproduct.repository.ProductRepository
@@ -11,12 +11,14 @@ import java.util.UUID
 @Service
 class ProductServiceImp (
     private val productRepository: ProductRepository,
-    private val productMapper: ProductMapper)
-    : ProductService {
+    private val productMapper: ProductMapper,
+    private val stockServiceImp: StockServiceImp
+) : ProductService {
 
     override fun  create(productDto: ProductDto) : ProductDto {
-        val entity = productMapper.toEntity(productDto)
-        val response = productRepository.save(entity)
+        val productEntity = productMapper.toEntity(productDto)
+        val response = productRepository.save(productEntity)
+        stockServiceImp.create(response)
         return productMapper.toDto(response)
     }
 

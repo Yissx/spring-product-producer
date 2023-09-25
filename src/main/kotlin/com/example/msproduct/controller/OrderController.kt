@@ -1,9 +1,9 @@
 package com.example.msproduct.controller
 
-import com.example.msproduct.dto.OrderDto
+import com.example.msproduct.dto.request.OrderDtoRequest
+import com.example.msproduct.dto.response.OrderDto
+import com.example.msproduct.dto.request.OrderDtoRequestCreate
 import com.example.msproduct.service.OrderService
-import com.example.msproduct.service.imp.OrderServiceImp
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
@@ -29,16 +29,20 @@ class OrderController (val orderService: OrderService){
         = orderService.findById(id)
 
     @PostMapping
-    fun create(@RequestBody orderDto: OrderDto) : OrderDto
+    fun create(@RequestBody orderDto: OrderDtoRequestCreate) : OrderDto
         = orderService.create(orderDto)
 
+    @PutMapping("/{id}/update")
+    fun update(@RequestBody orderDto: OrderDtoRequest, @PathVariable("id") id : UUID) : OrderDto
+        = orderService.update(orderDto, id)
+
     @PutMapping("/{id}/add-product")
-    fun addProduct(@RequestBody orderDto: OrderDto, @PathVariable("id") id : UUID) :OrderDto
-        = orderService.addProduct(orderDto, id)
+    fun addProduct(@RequestBody products: List<UUID>, @PathVariable("id") id : UUID) : OrderDto
+        = orderService.addProduct(products, id)
 
     @PutMapping("/{id}/delete-product")
-    fun deleteProduct(@RequestBody orderDto: OrderDto, @PathVariable("id") id : UUID) :OrderDto
-            = orderService.deleteProduct(orderDto, id)
+    fun deleteProduct(@RequestBody products: List<UUID>, @PathVariable("id") id : UUID) : OrderDto
+            = orderService.deleteProduct(products, id)
     @ResponseStatus(HttpStatus.OK)
     @DeleteMapping("/{id}")
     fun delete(@PathVariable id : UUID)

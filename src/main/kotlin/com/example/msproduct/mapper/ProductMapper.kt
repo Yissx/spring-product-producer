@@ -1,6 +1,6 @@
 package com.example.msproduct.mapper
 
-import com.example.msproduct.dto.ProductDto
+import com.example.msproduct.dto.response.ProductDto
 import com.example.msproduct.entity.ProductEntity
 import org.mapstruct.Mapper
 import org.mapstruct.MappingTarget

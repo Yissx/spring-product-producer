@@ -1,6 +1,6 @@
 package com.example.msproduct
 
-import com.example.msproduct.dto.ProductDto
+import com.example.msproduct.dto.response.ProductDto
 import com.example.msproduct.entity.ProductEntity
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.mapper.ProductMapper
@@ -16,6 +16,7 @@ import org.mockito.junit.jupiter.MockitoSettings
 import org.mockito.quality.Strictness
 import org.junit.jupiter.api.Test
 import java.util.Optional
+import java.util.UUID
 
 @ExtendWith(MockitoExtension::class)
 @MockitoSettings(strictness = Strictness.LENIENT)
@@ -84,7 +85,7 @@ class MsProductTest : TestData(){
         val dto = msProductDto()
         Mockito.`when`(productMapper.toEntity(dto)).thenReturn(
             ProductEntity().apply {
-                id = dto.id
+                id = dto.id!!
                 name = dto.name
                 description = dto.description
                 price = dto.price
@@ -152,7 +153,7 @@ class MsProductTest : TestData(){
 
     @Test
     fun `delete`(){
-        val id : Long = 1
+        val id : UUID = UUID.randomUUID()
         Mockito.doNothing().`when`(productRepository).deleteById(id)
         productServiceImp.delete(id)
         Mockito.verify(productRepository).deleteById(id)

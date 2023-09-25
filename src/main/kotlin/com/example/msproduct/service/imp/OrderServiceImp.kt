@@ -1,12 +1,15 @@
 package com.example.msproduct.service.imp
 
-import com.example.msproduct.dto.OrderDto
-import com.example.msproduct.entity.ProductEntity
+import com.example.msproduct.dto.enums.OrderStatusEnum
+import com.example.msproduct.dto.request.OrderDtoRequest
+import com.example.msproduct.dto.response.OrderDto
+import com.example.msproduct.dto.request.OrderDtoRequestCreate
 import com.example.msproduct.errors.EntityNotFoundException
-import com.example.msproduct.mapper.ClientMapper
+import com.example.msproduct.errors.ProductNotAvailable
 import com.example.msproduct.mapper.OrderMapper
-import com.example.msproduct.mapper.ProductMapper
+import com.example.msproduct.repository.ClientRepository
 import com.example.msproduct.repository.OrderRepository
+import com.example.msproduct.repository.ProductRepository
 import com.example.msproduct.service.OrderService
 import org.springframework.stereotype.Service
 import java.util.UUID
@@ -14,19 +17,16 @@ import java.util.UUID
 @Service
 class OrderServiceImp(
     private val orderRepository: OrderRepository,
-    private val clientServiceImp: ClientServiceImp,
     private val orderMapper : OrderMapper,
-    private val clientMapper: ClientMapper,
-    private val productServiceImp: ProductServiceImp,
-    private val productMapper: ProductMapper
+    private val productRepository: ProductRepository,
+    private val clientRepository: ClientRepository
 ) : OrderService{
 
-    override fun create(orderDto: OrderDto): OrderDto {
-        val client = clientMapper.toEntity(clientServiceImp.findById(orderDto.clientId!!))
-        val products : List<ProductEntity> = orderDto.products!!.map {
-            productMapper.toEntity(productServiceImp.findById(it))
+    override fun create(orderDto: OrderDtoRequestCreate): OrderDto {
+        val client = clientRepository.findById(orderDto.clientId!!).orElseThrow {
+            EntityNotFoundException("Non-existent client entity with id ${orderDto.clientId}")
         }
-        val orderEntity = orderMapper.toEntity(orderDto, products, client)
+        val orderEntity = orderMapper.toEntity(orderDto, client)
         val response = orderRepository.save(orderEntity)
         return orderMapper.toDto(response)
     }
@@ -45,22 +45,55 @@ class OrderServiceImp(
         return orderMapper.toDto(response)
     }
 
-    override fun addProduct(orderDto: OrderDto, id: UUID): OrderDto {
-        orderDto.products!!.forEach { productId ->
-            orderRepository.addProductToOrder(productId, id)
-        }
-        val response = orderRepository.findById(id).orElseThrow{
+    override fun update(orderDto: OrderDtoRequest, id: UUID): OrderDto {
+        val orderEntity = orderRepository.findById(id).orElseThrow {
             EntityNotFoundException("Non-existent entity order with id $id")
         }
+        //val stockProductsToBeUpdated : MutableList<ProductEntity> = mutableListOf()
+        if(orderDto.status == OrderStatusEnum.CANCELED && orderEntity.status != OrderStatusEnum.CANCELED){
+            orderEntity.products?.forEach { product ->
+                product.stock!!.stock += 1
+                //stockProductsToBeUpdated.add(product)
+            }
+            //orderEntity.products?.removeAll(stockProductsToBeUpdated)
+        }
+        orderMapper.update(orderDto, orderEntity)
+        val response = orderRepository.save(orderEntity)
         return orderMapper.toDto(response)
     }
-    override fun deleteProduct(orderDto: OrderDto, id: UUID): OrderDto {
-        orderDto.products!!.forEach {productId ->
-            orderRepository.deleteProductFromOrder(productId, id)
-        }
-        val response = orderRepository.findById(id).orElseThrow {
+
+    override fun addProduct(products: List<UUID>, id: UUID): OrderDto {
+        val order = orderRepository.findById(id).orElseThrow{
             EntityNotFoundException("Non-existent entity order with id $id")
         }
+        products.forEach{productId ->
+            val product = productRepository.findById(productId).orElseThrow {
+                EntityNotFoundException("Non-existent product entity with id $id")
+            }
+            if(product.stock!!.stock > 0){
+                order.products?.add(product)
+                product.stock!!.stock -= 1
+                productRepository.save(product)
+            }
+            else{
+                throw ProductNotAvailable("Product with id $productId is not available")
+            }
+        }
+        val response = orderRepository.save(order)
+        return orderMapper.toDto(response)
+    }
+    override fun deleteProduct(products: List<UUID>, id: UUID): OrderDto {
+        val order = orderRepository.findById(id).orElseThrow{
+            EntityNotFoundException("Non-existent entity order with id $id")
+        }
+        products?.forEach{
+            val product = productRepository.findById(it).orElseThrow {
+                EntityNotFoundException("Non-existent entity product with id $id")
+            }
+            order.products?.remove(product)
+            product.stock!!.stock += 1
+        }
+        val response = orderRepository.save(order)
         return orderMapper.toDto(response)
     }
 

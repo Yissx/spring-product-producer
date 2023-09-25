@@ -1,7 +1,6 @@
 package com.example.msproduct.entity
 
 import com.example.msproduct.dto.enums.OrderStatusEnum
-import jakarta.persistence.CascadeType
 import jakarta.persistence.Column
 import jakarta.persistence.Entity
 import jakarta.persistence.EnumType
@@ -12,7 +11,6 @@ import jakarta.persistence.JoinColumn
 import jakarta.persistence.JoinTable
 import jakarta.persistence.ManyToMany
 import jakarta.persistence.ManyToOne
-import jakarta.persistence.OneToMany
 import jakarta.persistence.Table
 import jakarta.validation.constraints.NotNull
 import java.time.LocalDateTime
@@ -40,9 +38,9 @@ data class OrderEntity(
         joinColumns = [JoinColumn(name = "order_id")],
         inverseJoinColumns = [JoinColumn(name = "product_id")]
     )
-    var products : List<ProductEntity>? = null,
+    var products : MutableList<ProductEntity>? = mutableListOf(),
 
     @NotNull
     @Enumerated(EnumType.STRING)
-    var status : OrderStatusEnum? = null
+    var status : OrderStatusEnum? = OrderStatusEnum.PENDING
 )

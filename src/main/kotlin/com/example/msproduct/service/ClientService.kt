@@ -1,6 +1,6 @@
 package com.example.msproduct.service
 
-import com.example.msproduct.dto.ClientDto
+import com.example.msproduct.dto.response.ClientDto
 import java.util.UUID
 
 interface ClientService {

@@ -28,4 +28,13 @@ class GlobalErrorHandler : ResponseEntityExceptionHandler() {
                 message = ex.message
             })
     }
+
+    @ExceptionHandler(ProductNotAvailable::class)
+    fun handleProductNotAvailable(ex : InvalidRequestBody) : ResponseEntity<ErrorCustomized> {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(ErrorCustomized().apply {
+                code = HttpStatus.BAD_REQUEST
+                message = ex.message
+            })
+    }
 }

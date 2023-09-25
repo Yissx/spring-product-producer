@@ -1,12 +1,8 @@
 package com.example.msproduct.controller
 
-import com.example.msproduct.repository.ProductRepository
-import com.example.msproduct.dto.ProductDto
-import com.example.msproduct.mapper.ProductMapper
+import com.example.msproduct.dto.response.ProductDto
 import com.example.msproduct.service.ProductService
-import org.springframework.data.jpa.domain.AbstractPersistable_.id
 import org.springframework.http.HttpStatus
-import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.DeleteMapping
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable

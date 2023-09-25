@@ -1,4 +1,4 @@
-package com.example.msproduct.dto
+package com.example.msproduct.dto.response
 
 import jakarta.validation.constraints.NotNull
 import java.util.UUID
