@@ -6,6 +6,7 @@ import com.example.msproduct.dto.response.OrderDto
 import com.example.msproduct.dto.request.OrderDtoRequestCreate
 import com.example.msproduct.errors.EntityNotFoundException
 import com.example.msproduct.errors.ProductNotAvailable
+import com.example.msproduct.kafka.producer.KafkaProducer
 import com.example.msproduct.mapper.OrderMapper
 import com.example.msproduct.repository.ClientRepository
 import com.example.msproduct.repository.OrderRepository
@@ -19,7 +20,8 @@ class OrderServiceImp(
     private val orderRepository: OrderRepository,
     private val orderMapper : OrderMapper,
     private val productRepository: ProductRepository,
-    private val clientRepository: ClientRepository
+    private val clientRepository: ClientRepository,
+    private val kafkaProducer: KafkaProducer
 ) : OrderService{
 
     override fun create(orderDto: OrderDtoRequestCreate): OrderDto {
@@ -49,13 +51,10 @@ class OrderServiceImp(
         val orderEntity = orderRepository.findById(id).orElseThrow {
             EntityNotFoundException("Non-existent entity order with id $id")
         }
-        //val stockProductsToBeUpdated : MutableList<ProductEntity> = mutableListOf()
         if(orderDto.status == OrderStatusEnum.CANCELED && orderEntity.status != OrderStatusEnum.CANCELED){
             orderEntity.products?.forEach { product ->
-                product.stock!!.stock += 1
-                //stockProductsToBeUpdated.add(product)
+                kafkaProducer.sendMessage(product.id.toString())
             }
-            //orderEntity.products?.removeAll(stockProductsToBeUpdated)
         }
         orderMapper.update(orderDto, orderEntity)
         val response = orderRepository.save(orderEntity)
